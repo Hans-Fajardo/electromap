@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Settings - Electro Map</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/app.css?v=1.0.4" />
+    <link rel="manifest" href="/manifest.json?v=1.0.4" />
+    <script defer src="../js/checkAuth.js?v=1.0.4"></script>
+    <script defer src="../js/logout.js?v=1.0.4"></script>
+    <script defer src="../js/settings.js?v=1.0.4"></script>
+  </head>
+
+  <body>
+    <header>
+      <a href="./dashboard.html"
+        ><svg
+          width="40"
+          height="40"
+          viewBox="0 0 40 40"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M25 10L15 20L25 30"
+            stroke="#000080"
+            stroke-width="6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </a>
+      <h1>Profile</h1>
+    </header>
+    <main>
+      <div class="profile-container">
+        <img
+          src="../assets/profile.jpg"
+          alt="Profile-Picture"
+          id="profile-picture"
+        />
+        <div class="profile-information">
+          <h2>{name}</h2>
+          <p>Employee Id</p>
+        </div>
+      </div>
+      <div class="settings-container">
+        <div class="common-setting-container">
+          <p>Light Mode</p>
+          <label class="toggle-switch">
+            <input type="checkbox" id="light-toggle" checked />
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div
+          class="common-setting-container"
+          id="pendingContributionsSection"
+          style="display: none"
+          onclick="goToPendingContributions()"
+        >
+          <p>Pending Contributions</p>
+        </div>
+        <div
+          class="common-setting-container"
+          id="activePinpointsSection"
+          style="display: none"
+          onclick="goToActivePinpoints()"
+        >
+          <p>Active Pinpoints</p>
+        </div>
+        <div
+          class="common-setting-container"
+          id="checkUsersSection"
+          style="display: none"
+          onclick="goToCheckUsers()"
+        >
+          <p>Check Users</p>
+        </div>
+      </div>
+
+      <a href="../index.html" id="logoutBtn">Logout</a>
+    </main>
+  </body>
+</html>

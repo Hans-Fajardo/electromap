@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Live Map Routing</title>
+
+    <!-- MapTiler SDK -->
+    <script src="https://cdn.maptiler.com/maptiler-sdk-js/v2.3.0/maptiler-sdk.umd.js"></script>
+    <link
+      href="https://cdn.maptiler.com/maptiler-sdk-js/v2.3.0/maptiler-sdk.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* Map Container */
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+      }
+      #map {
+        height: 100vh;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+
+    <script>
+      // Global variables
+      let startLocation = null; // User's starting location
+      let map = null; // MapTiler map instance
+      let routeLayerId = "route"; // Route layer ID for easy updating
+
+      // Initialize the MapTiler Map
+      function initializeMap() {
+        maptilersdk.config.apiKey = "AvvtWmjKMOylu3JWL40T";
+        map = new maptilersdk.Map({
+          container: "map",
+          style: maptilersdk.MapStyle.STREETS,
+          center: [0, 0], // Temporary center
+          zoom: 2,
+        });
+
+        // Wait for the map to load
+        map.on("load", () => {
+          console.log("Map loaded. Waiting for geolocation...");
+
+          // Get the user's current location
+          getCurrentLocation();
+        });
+
+        // Add a click event to set the destination and update the route
+        map.on("click", (event) => {
+          if (!startLocation) {
+            alert("Waiting for your current location...");
+            return;
+          }
+
+          const destination = [event.lngLat.lng, event.lngLat.lat];
+          console.log("Destination set at:", destination);
+
+          // Update the route on the map
+          updateRoute(startLocation, destination);
+        });
+      }
+
+      // Get the user's current location using the Geolocation API
+      // Continuously track the user's current location
+      function getCurrentLocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.watchPosition(
+            (position) => {
+              startLocation = [
+                position.coords.longitude,
+                position.coords.latitude,
+              ];
+              console.log("Updated location:", startLocation);
+
+              // Update map center dynamically
+              map.flyTo({ center: startLocation, zoom: 14 });
+
+              // Optionally, you can add a marker to show your live position
+              if (!map.getSource("live-location")) {
+                map.addSource("live-location", {
+                  type: "geojson",
+                  data: {
+                    type: "Feature",
+                    geometry: { type: "Point", coordinates: startLocation },
+                    properties: {},
+                  },
+                });
+
+                map.addLayer({
+                  id: "live-location",
+                  type: "circle",
+                  source: "live-location",
+                  paint: {
+                    "circle-radius": 8,
+                    "circle-color": "#007BFF",
+                    "circle-stroke-width": 2,
+                    "circle-stroke-color": "#fff",
+                  },
+                });
+              } else {
+                // Update the live location source dynamically
+                map.getSource("live-location").setData({
+                  type: "Feature",
+                  geometry: { type: "Point", coordinates: startLocation },
+                  properties: {},
+                });
+              }
+            },
+            (error) => {
+              console.error(
+                "Error retrieving location updates:",
+                error.message
+              );
+              alert(
+                "Unable to retrieve location updates. Please ensure location services are enabled."
+              );
+            },
+            { enableHighAccuracy: true }
+          );
+        } else {
+          alert("Geolocation is not supported by your browser.");
+        }
+      }
+
+      // Fetch the route using OSRM API and display it on the map
+      function updateRoute(start, end) {
+        const osrmApiUrl = `https://router.project-osrm.org/route/v1/driving/${start[0]},${start[1]};${end[0]},${end[1]}?overview=full&geometries=geojson`;
+
+        fetch(osrmApiUrl)
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("Route data:", data);
+
+            // Extract route geometry
+            const routeGeoJSON = data.routes[0].geometry;
+
+            // Remove the old route layer if it exists
+            if (map.getLayer(routeLayerId)) {
+              map.removeLayer(routeLayerId);
+              map.removeSource(routeLayerId);
+            }
+
+            // Add the new route layer
+            map.addSource(routeLayerId, {
+              type: "geojson",
+              data: {
+                type: "Feature",
+                properties: {},
+                geometry: routeGeoJSON,
+              },
+            });
+
+            map.addLayer({
+              id: routeLayerId,
+              type: "line",
+              source: routeLayerId,
+              layout: {
+                "line-join": "round",
+                "line-cap": "round",
+              },
+              paint: {
+                "line-color": "#FF0000",
+                "line-width": 5,
+              },
+            });
+
+            // Fit the map to the new route
+            const coordinates = routeGeoJSON.coordinates;
+            const bounds = coordinates.reduce(
+              (bounds, coord) => bounds.extend(coord),
+              new maptilersdk.LngLatBounds(coordinates[0], coordinates[0])
+            );
+
+            map.fitBounds(bounds, { padding: 50 });
+          })
+          .catch((error) => console.error("Error fetching route:", error));
+      }
+
+      // Initialize the map on page load
+      initializeMap();
+    </script>
+  </body>
+</html>

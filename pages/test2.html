@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proximity Check</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    #status {
+      font-size: 1.5em;
+      margin-bottom: 10px;
+    }
+    #distance {
+      font-size: 1.2em;
+      color: #555;
+    }
+    #map {
+      margin-top: 20px;
+      width: 100%;
+      max-width: 600px;
+      height: 300px;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+  <div id="status">Checking proximity...</div>
+  <div id="distance">Distance: -- meters</div>
+  <div id="map"></div>
+
+  <script>
+    // Function to calculate the distance between two coordinates using the Haversine formula
+    function calculateDistance(lat1, lon1, lat2, lon2) {
+      const R = 6371e3; // Earth's radius in meters
+      const toRadians = (degrees) => (degrees * Math.PI) / 180;
+
+      const deltaLat = toRadians(lat2 - lat1);
+      const deltaLon = toRadians(lon2 - lon1);
+
+      const a =
+        Math.sin(deltaLat / 2) * Math.sin(deltaLat / 2) +
+        Math.cos(toRadians(lat1)) *
+          Math.cos(toRadians(lat2)) *
+          Math.sin(deltaLon / 2) *
+          Math.sin(deltaLon / 2);
+
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      const distance = R * c; // Distance in meters
+
+      return distance;
+    }
+
+    // Function to check proximity
+    function checkProximity(currentLocation, destination, threshold = 50) {
+      const distance = calculateDistance(
+        currentLocation[1],
+        currentLocation[0],
+        destination[1],
+        destination[0]
+      );
+
+      document.getElementById("distance").innerText = `Distance: ${distance.toFixed(2)} meters`;
+
+      if (distance <= threshold) {
+        alert("You have arrived at your destination!");
+        document.getElementById("status").innerText = "You have arrived!";
+        return true;
+      }
+
+      document.getElementById("status").innerText = "Moving towards destination...";
+      return false;
+    }
+
+    // Destination coordinates (longitude, latitude)
+    const destination = [120.98887656812178, 14.806006900456995]; // Example destination
+
+    // Initialize map and proximity check
+    const mapContainer = document.getElementById("map");
+
+    navigator.geolocation.watchPosition(
+      (position) => {
+        const currentLocation = [
+          position.coords.longitude,
+          position.coords.latitude,
+        ];
+
+        // Check if you're near the destination
+        checkProximity(currentLocation, destination);
+
+        // Optionally, update the map with the current location
+        mapContainer.innerHTML = `
+          <p>Your Location: ${currentLocation[1].toFixed(5)}, ${currentLocation[0].toFixed(5)}</p>
+          <p>Destination: ${destination[1]}, ${destination[0]}</p>
+        `;
+      },
+      (error) => {
+        console.error("Error getting location:", error.message);
+        document.getElementById("status").innerText = "Unable to get location.";
+      },
+      { enableHighAccuracy: true }
+    );
+  </script>
+</body>
+</html>

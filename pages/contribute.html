@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Contribution | Electro Map</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      defer
+      src="https://cdn.maptiler.com/maptiler-sdk-js/v2.3.0/maptiler-sdk.umd.js"
+    ></script>
+    <link
+      href="https://cdn.maptiler.com/maptiler-sdk-js/v2.3.0/maptiler-sdk.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/app.css?v=1.0.4" />
+    <link rel="stylesheet" href="/css/alert.css?v=1.0.4" />
+    <link rel="manifest" href="/manifest.json?v=1.0.4" />
+    <script defer src="../js/checkAuth.js?v=1.0.4"></script>
+  </head>
+  <body id="contributeBody">
+    <div class="choose-contribution-action">
+      <div id="add-meter-number">Add meter number</div>
+      <div id="delete-meter-number">Delete meter number</div>
+    </div>
+    <div class="navbar">
+      <ul>
+        <li>
+          <a href="#" class="active-link">
+            <img src="../assets/contributeIcon.svg" alt="contribute-icon" />
+            <p>Contribute</p>
+          </a>
+        </li>
+        <li>
+          <a href="./dashboard.html">
+            <img src="../assets/homeIconInactive.svg" alt="dashboard-icon" />
+            <p>Explore</p>
+          </a>
+        </li>
+        <li>
+          <a href="./settings.html">
+            <img src="../assets/profileIconInactive.svg" alt="settings-icon" />
+            <p>Profile</p>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <script defer>
+      document.getElementById('add-meter-number').addEventListener('click', () => {
+        window.location.href = "/pages/add-contribute.html";
+      });
+      document.getElementById('delete-meter-number').addEventListener('click', () => {
+        window.location.href = "/pages/delete-contribute.html";
+      })
+    </script>
+  </body>
+</html>
