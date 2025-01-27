@@ -37,7 +37,7 @@ if (document.getElementById("loginForm")) {
         if (response.ok && result.success) {
           localStorage.setItem("authToken", result.token);
           localStorage.setItem("email", email);
-          window.location.replace("../pages/dashboard.html");
+          window.location.replace("../pages/dashboard.php");
         } else {
           console.log(result.message);
           showModal(result.message);
@@ -72,7 +72,7 @@ if (document.getElementById("registerForm")) {
         const result = await response.json();
 
         if (response.ok && result.success) {
-          window.location.href = "/index.html";
+          window.location.href = "/index.php";
         } else {
           console.log(result.message);
           showModal(result.message);

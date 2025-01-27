@@ -1,7 +1,16 @@
+<?php
+session_start();
+
+if (!isset($_SESSION['userId'])) {
+    header("Location: /index.php");
+    exit;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Delete Contribution - Electro Map</title>
+    <title>Add Contribution | Electro Map</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script
@@ -19,26 +28,14 @@
     <script defer type="module" src="../js/contribute.js?v=1.0.5"></script>
     <script defer type="module" src="../js/alert.js?v=1.0.5"></script>
   </head>
-
-  <body>
-    <div class="top-header">
-      <form>
-        <input
-          type="search"
-          placeholder="Search ElectroPin"
-          id="searchBar"
-          aria-autocomplete="none"
-        />
-      </form>
-    </div>
-
-    <div id="results">
-      <ul id="resultsContainer">
-        <!-- Search results will be displayed here -->
-      </ul>
+  <body id="contributeBody">
+    <div id="choosePinLocation">
+      <p>Drag to choose your location</p>
     </div>
 
     <div id="map-container"></div>
+
+    <div id="choose-location-btn">Choose Location</div>
 
     <div class="navbar">
       <ul>
@@ -101,20 +98,8 @@
       </div>
     </div>
 
-    <!-- Confirmation Modal -->
-    <div id="confirmationModal" class="modal">
-      <div class="modal-content">
-        <p id="modalMessage">Are you sure you want to delete this pinpoint?</p>
-        <p>Note: This will need admin's approval before deletion</p>
-        <div class="modal-actions">
-          <button id="confirmYesBtn" class="confirm-btn">Yes</button>
-          <button id="confirmNoBtn" class="cancel-btn">No</button>
-        </div>
-      </div>
-    </div>
-
     <script defer>
-      let isAdding = false;
+      let isAdding = true;
     </script>
   </body>
 </html>

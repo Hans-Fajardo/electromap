@@ -1,13 +1,13 @@
 function goToPendingContributions() {
-  window.location.href = "/pages/pending-contributions.html";
+  window.location.href = "/pages/pending-contributions.php";
 }
 
 function goToActivePinpoints() {
-  window.location.href = "/pages/active-pinpoints.html";
+  window.location.href = "/pages/active-pinpoints.php";
 }
 
 function goToCheckUsers() {
-  window.location.href = "/pages/check-users.html";
+  window.location.href = "/pages/check-users.php";
 }
 
 document

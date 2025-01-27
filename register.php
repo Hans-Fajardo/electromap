@@ -46,7 +46,7 @@
         aria-autocomplete="none"
       />
       <input type="submit" value="Sign Up" id="signUpBtn" />
-      <p>Already have an account? <a href="./index.html">Sign In</a></p>
+      <p>Already have an account? <a href="./index.php">Sign In</a></p>
     </form>
 
     <div id="modal">

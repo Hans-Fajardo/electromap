@@ -1,7 +1,7 @@
 async function checkAuth() {
   const token = localStorage.getItem("authToken");
   if (!token) {
-    window.location.href = "/index.html";
+    window.location.href = "/index.php";
     return;
   }
 
@@ -22,7 +22,7 @@ async function checkAuth() {
       typeof localStorage.getItem("email") == "undefined"
     ) {
       localStorage.removeItem("authToken");
-      window.location.replace = "/index.html";
+      window.location.replace = "/index.php";
     } else {
       const userRole = result.role;
       const userName = result.username;
@@ -58,14 +58,14 @@ async function checkAuth() {
     }
   } catch (error) {
     console.error("Token validation failed:", error);
-    window.location.replace = "/index.html";
+    window.location.replace = "/index.php";
   }
 }
 
 checkAuth();
 
 function NavigateTo(pageToNavigate) {
-  window.location.href = `./${pageToNavigate}.html`;
+  window.location.href = `./${pageToNavigate}.php`;
 }
 
 async function LogoutSession() {
@@ -83,7 +83,7 @@ async function LogoutSession() {
     localStorage.removeItem("authToken");
     localStorage.removeItem("email");
 
-    window.location.href = "/index.html";
+    window.location.href = "/index.php";
   } catch (error) {
     console.error("Logout failed:", error);
   }

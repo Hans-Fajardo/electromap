@@ -31,7 +31,7 @@
         aria-autocomplete="none"
       />
       <input type="submit" value="Sign In" id="signInBtn" />
-      <p>Doesn't have an account? <a href="./register.html">Sign Up</a></p>
+      <p>Doesn't have an account? <a href="./register.php">Sign Up</a></p>
     </form>
 
     <div id="modal">

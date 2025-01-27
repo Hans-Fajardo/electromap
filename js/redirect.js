@@ -14,7 +14,7 @@ async function redirectIfLoggedIn() {
     const result = await response.json();
 
     if (result.valid) {
-      window.location.href = "/pages/dashboard.html";
+      window.location.href = "/pages/dashboard.php";
     }
   } catch (error) {
     console.error("Token validation failed:", error);
