@@ -1,7 +1,7 @@
 async function checkAuth() {
   const token = localStorage.getItem("authToken");
   if (!token) {
-    window.location.replace = "/index.html";
+    window.location.href = "/index.html";
     return;
   }
 
@@ -15,8 +15,12 @@ async function checkAuth() {
     });
 
     const result = await response.json();
-
-    if (!result.valid) {
+    
+    if (
+      !result.valid ||
+      localStorage.getItem("email") == null ||
+      typeof localStorage.getItem("email") == "undefined"
+    ) {
       localStorage.removeItem("authToken");
       window.location.replace = "/index.html";
     } else {
@@ -62,4 +66,25 @@ checkAuth();
 
 function NavigateTo(pageToNavigate) {
   window.location.href = `./${pageToNavigate}.html`;
+}
+
+async function LogoutSession() {
+  const token = localStorage.getItem("authToken");
+
+  try {
+    await fetch("/php/logout.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ token }),
+    });
+
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("email");
+
+    window.location.href = "/index.html";
+  } catch (error) {
+    console.error("Logout failed:", error);
+  }
 }
