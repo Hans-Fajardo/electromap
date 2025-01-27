@@ -41,6 +41,7 @@ body {
   color: #333;
   height: 100vh;
   height: 100svh;
+  overflow: hidden;
 }
 
 header {
@@ -109,7 +110,7 @@ header > div:active svg {
   user-select: none;
 }
 
-.navbar ul li > div:active { 
+.navbar ul li > div:active {
   scale: 0.9;
 }
 
@@ -235,6 +236,8 @@ header > div:active svg {
   position: absolute;
   left: 2rem;
   bottom: 2rem;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 #contributeBody,
@@ -331,7 +334,7 @@ header > div:active svg {
   border: none;
   font-size: 1rem;
   padding: 0.3em 1em;
-  width: 70%;
+  width: 100%;
 }
 
 .imageContainer {
@@ -348,16 +351,18 @@ header > div:active svg {
   justify-content: space-between;
   padding: 0.5em 0;
   align-items: center;
+  gap: 1rem;
   margin: 1rem 0;
 }
 
-#addBtn,
-#removeBtn {
+#addBtn {
   border-radius: 1rem;
   border: none;
   padding: 0 1em;
   height: 2rem;
   cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 #removeBtn,
@@ -368,6 +373,8 @@ header > div:active svg {
   padding: 0.5em 1.25em;
   border-radius: 1rem;
   cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .imageOverlay {
@@ -391,8 +398,13 @@ header > div:active svg {
 #infoImage {
   width: 100%;
   height: auto;
+  max-height: 100%;
   aspect-ratio: 16 / 9;
   object-fit: cover;
+}
+
+#infoImage {
+  width: 90%;
 }
 
 #captureBtn {
@@ -404,6 +416,8 @@ header > div:active svg {
   border: none;
   border-radius: 100vw;
   background-color: #fff;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 #switchCameraBtn {
@@ -418,6 +432,8 @@ header > div:active svg {
   display: flex;
   justify-content: center;
   align-items: center;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 #results {
@@ -494,6 +510,8 @@ header > div:active svg {
   padding: 0.5rem 1rem;
   border-radius: 4px;
   cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .confirm-btn:hover {
@@ -507,6 +525,8 @@ header > div:active svg {
   padding: 0.5rem 1rem;
   border-radius: 4px;
   cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .cancel-btn:hover {
@@ -614,6 +634,8 @@ header > div:active svg {
   border: none;
   background-color: var(--primary-color);
   color: var(--white);
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 #navigateBtn img {
@@ -689,6 +711,8 @@ header > div:active svg {
   font-size: 0.75rem;
   border-radius: 100vw;
   transition: all 0.3s ease;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 #enterDriveModeBtn {
@@ -699,6 +723,8 @@ header > div:active svg {
   font-size: 0.75rem;
   border-radius: 100vw;
   transition: all 0.3s ease;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .prompt-overlay {
@@ -800,6 +826,8 @@ header > div:active svg {
   text-align: center;
   transform: translateX(-50%);
   color: var(--white);
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .searchContainer {
@@ -846,6 +874,17 @@ header > div:active svg {
 }
 
 @media screen and (max-width: 400px) {
+  .top-header {
+    border-end-start-radius: 1.5rem;
+    border-end-end-radius: 1.5rem;
+    padding: 1.5rem;
+  }
+
+  .top-header #searchBar {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+  }
+
   .common-setting-container {
     margin: 1rem auto 0;
   }
@@ -853,4 +892,16 @@ header > div:active svg {
   #logoutBtn {
     font-size: 1rem;
   }
-} 
+
+  .profile-container {
+    padding: 2em 0;
+  }
+
+  #profile-picture {
+    width: 5rem;
+  }
+
+  #choose-location-btn {
+    padding: 1em;
+  }
+}

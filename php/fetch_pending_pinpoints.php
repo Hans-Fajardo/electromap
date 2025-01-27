@@ -1,7 +1,7 @@
 <?php
 include 'db.php';
 
-$sql = "SELECT * FROM pinpoints WHERE isApproved = 0";
+$sql = "SELECT * FROM pinpoints WHERE isApproved = 0 OR requestDelete = 1";
 $result = $conn->query($sql);
 
 $data = [];

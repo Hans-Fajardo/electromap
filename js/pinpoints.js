@@ -18,9 +18,6 @@ document.addEventListener("DOMContentLoaded", () => {
     "pendingContributions"
   );
   const activePinpointsList = document.getElementById("activePinpoints");
-  const deletePendingContributionsList = document.getElementById(
-    "deletePendingContributions"
-  );
   const confirmationModal = document.getElementById("confirmationModal");
   const confirmYesBtn = document.getElementById("confirmYesBtn");
   const confirmNoBtn = document.getElementById("confirmNoBtn");
@@ -70,23 +67,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  const fetchDeletePendingPinpoints = async () => {
-    if (deletePendingContributionsList) {
-      const deletePending = await sendRequest("../php/fetch_contributed_pinpoints.php");
-      deletePendingContributionsList.innerHTML = "";
-      if (deletePending.length > 0) {
-        console.log(deletePending)
-        deletePending.forEach((pin) => renderDeletePendingPin(pin));
-      } else {
-        deletePendingContributionsList.innerHTML =
-          "<li>No contributions yet</li>";
-      }
-    }
-  };
-
   const renderPendingPin = (pin) => {
     const listItem = document.createElement("li");
     listItem.textContent = pin.meterNumber || `Pinpoint #${pin.pointId}`;
+
+    if (pin.requestDelete == 1) {
+      listItem.style.backgroundColor = "rgba(255, 0, 0, 0.2)";
+    }
 
     const settingsContainer = document.createElement("div");
     settingsContainer.style.position = "relative";
@@ -135,7 +122,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const acceptOption = document.createElement("li");
     acceptOption.textContent = "Accept";
     acceptOption.addEventListener("click", async () => {
-      await handlePinAction("../php/accept_pinpoint.php", pin.pointId);
+      if (pin.requestDelete == 1) {
+        await handlePinAction("../php/delete_pinpoint.php", pin.pointId);
+      } else {
+        await handlePinAction("../php/accept_pinpoint.php", pin.pointId);
+      }
       await fetchPendingPinpoints();
       await fetchActivePinpoints();
     });
@@ -213,52 +204,6 @@ document.addEventListener("DOMContentLoaded", () => {
     activePinpointsList.appendChild(listItem);
   };
 
-  const renderDeletePendingPin = (pin) => {
-    const listItem = document.createElement("li");
-    listItem.textContent = pin.meterNumber || `Pinpoint #${pin.pointId}`;
-
-    const removeButton = document.createElement("button");
-    removeButton.textContent = "Remove";
-    removeButton.classList.add("removeBtn");
-    removeButton.addEventListener("click", (e) => {
-      e.stopPropagation();
-      showConfirmationModal(async () => {
-        await handlePinAction("../php/delete_pinpoint.php", pin.pointId);
-        await fetchDeletePendingPinpoints();
-      });
-    });
-
-    listItem.addEventListener("click", () => {
-      pinInfoModalBg.style.display = "block";
-      infoMeterNumber.innerText = `Meter Number: ${pin.meterNumber}`;
-      infoLocation.innerText = `Location: ${pin.latitude}, ${pin.longitude}`;
-      infoDateAdded.innerText = `Date Added: ${pin.createdAt}`;
-      infoContributedBy.innerText = `Contributed By: ${pin.contributedBy}`;
-      infoImage.src = `/uploads/${pin.pointImage}`;
-
-      const customIconPath = "../assets/PinLogo.png";
-      const customIcon = document.createElement("img");
-      customIcon.src = customIconPath;
-      customIcon.style.width = "2.5rem";
-      customIcon.style.height = "2.5rem";
-
-      const map = new maptilersdk.Map({
-        container: "infoMap",
-        style: lightMode,
-        center: [pin.longitude, pin.latitude],
-        zoom: 18,
-        pitch: 0,
-      });
-
-      const marker = new maptilersdk.Marker({ element: customIcon })
-        .setLngLat([pin.longitude, pin.latitude])
-        .addTo(map);
-    });
-
-    listItem.appendChild(removeButton);
-    deletePendingContributionsList.appendChild(listItem);
-  };
-
   const showConfirmationModal = (onConfirm) => {
     confirmationModal.style.display = "flex";
 
@@ -304,7 +249,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const pendingSearch = document.getElementById("pendingSearch");
   const activeSearch = document.getElementById("activeSearch");
-  const deletePendingSearch = document.getElementById("deletePendingSearch");
 
   const filterPendingContributions = () => {
     const searchTerm = pendingSearch.value.toLowerCase();
@@ -334,30 +278,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
-  const filterDeletePendingSearch = () => {
-    const searchTerm = deletePendingSearch.value.toLowerCase();
-    const listItems = deletePendingContributionsList.querySelectorAll("li");
-
-    listItems.forEach((item) => {
-      const text = item.textContent.toLowerCase();
-      if (text.includes(searchTerm)) {
-        item.style.display = "flex";
-      } else {
-        item.style.display = "none";
-      }
-    });
-  };
-
-  if(pendingSearch)
+  if (pendingSearch)
     pendingSearch.addEventListener("input", filterPendingContributions);
 
-  if(activeSearch)
+  if (activeSearch)
     activeSearch.addEventListener("input", filterActivePinpoints);
-
-  if(deletePendingSearch)
-    deletePendingSearch.addEventListener("input", filterDeletePendingSearch);
 
   fetchPendingPinpoints();
   fetchActivePinpoints();
-  fetchDeletePendingPinpoints();
 });

@@ -1,7 +1,7 @@
 async function checkAuth() {
   const token = localStorage.getItem("authToken");
   if (!token) {
-    window.location.href = "/index.html";
+    window.location.replace = "/index.html";
     return;
   }
 
@@ -54,7 +54,7 @@ async function checkAuth() {
     }
   } catch (error) {
     console.error("Token validation failed:", error);
-    window.location.href = "/index.html";
+    window.location.replace = "/index.html";
   }
 }
 
