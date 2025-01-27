@@ -13,7 +13,7 @@ document.getElementById("logoutBtn").addEventListener("click", async () => {
         localStorage.removeItem("authToken");
         localStorage.removeItem("email");
 
-        window.location.href = "../index.html";
+        window.location.replace = "../index.html";
     } catch (error) {
         console.error("Logout failed:", error);
     }

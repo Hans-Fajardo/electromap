@@ -24,20 +24,28 @@ async function checkAuth() {
       const userName = result.username;
       const userId = result.userId;
 
-      const userNameContainer = document.querySelector('.profile-information h2');
-      const userIdContainer = document.querySelector('.profile-information p')
-
+      const userNameContainer = document.querySelector(
+        ".profile-information h2"
+      );
+      const userIdContainer = document.querySelector(".profile-information p");
 
       if (userNameContainer && userIdContainer) {
-          document.querySelector('.profile-information h2').textContent = userName;
-          document.querySelector('.profile-information p').textContent = `Employee ID: ${userId}`;
+        document.querySelector(".profile-information h2").textContent =
+          userName;
+        document.querySelector(
+          ".profile-information p"
+        ).textContent = `Employee ID: ${userId}`;
       }
 
       if (userRole === "admin") {
-        const pendingContributionsSection = document.getElementById("pendingContributionsSection");
-        const activePinpointsSection = document.getElementById("activePinpointsSection");
+        const pendingContributionsSection = document.getElementById(
+          "pendingContributionsSection"
+        );
+        const activePinpointsSection = document.getElementById(
+          "activePinpointsSection"
+        );
         const checkUsersSection = document.getElementById("checkUsersSection");
-        if(activePinpointsSection) {
+        if (activePinpointsSection) {
           pendingContributionsSection.style.display = "block";
           activePinpointsSection.style.display = "block";
           checkUsersSection.style.display = "block";
@@ -51,3 +59,7 @@ async function checkAuth() {
 }
 
 checkAuth();
+
+function NavigateTo(pageToNavigate) {
+  window.location.href = `./${pageToNavigate}.html`;
+}

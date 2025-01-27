@@ -175,7 +175,7 @@ document.getElementById("enterDriveModeBtn").addEventListener("click", () => {
   map.easeTo({
     pitch: 60,
     center: userCoordinates,
-    zoom: 20,
+    zoom: 18,
     duration: 500,
     easing: (t) => t,
   });

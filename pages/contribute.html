@@ -19,38 +19,30 @@
   </head>
   <body id="contributeBody">
     <div class="choose-contribution-action">
-      <div id="add-meter-number">Add meter number</div>
-      <div id="delete-meter-number">Delete meter number</div>
+      <div onclick="NavigateTo('add-contribute')" id="add-meter-number">Add meter number</div>
+      <div onclick="NavigateTo('delete-contribute')" id="delete-meter-number">Delete meter number</div>
     </div>
     <div class="navbar">
       <ul>
         <li>
-          <a href="#" class="active-link">
+          <div onclick="NavigateTo('#')" class="active-link">
             <img src="../assets/contributeIcon.svg" alt="contribute-icon" />
             <p>Contribute</p>
-          </a>
+          </div>
         </li>
         <li>
-          <a href="./dashboard.html">
+          <div onclick="NavigateTo('dashboard')">
             <img src="../assets/homeIconInactive.svg" alt="dashboard-icon" />
             <p>Explore</p>
-          </a>
+          </div>
         </li>
         <li>
-          <a href="./settings.html">
+          <div onclick="NavigateTo('settings')">
             <img src="../assets/profileIconInactive.svg" alt="settings-icon" />
             <p>Profile</p>
-          </a>
+          </div>
         </li>
       </ul>
     </div>
-    <script defer>
-      document.getElementById('add-meter-number').addEventListener('click', () => {
-        window.location.href = "/pages/add-contribute.html";
-      });
-      document.getElementById('delete-meter-number').addEventListener('click', () => {
-        window.location.href = "/pages/delete-contribute.html";
-      })
-    </script>
   </body>
 </html>
